@@ -69,7 +69,37 @@ public class SegreteriaStudentiController {
     
     @FXML
     void doCercaCorsi(ActionEvent event) {
+    	txtResult.clear();
+    	try {
 
+			int matricola = Integer.parseInt(txtMatricola.getText());
+			Studente studente = model.getStudente(matricola);
+
+			if (studente == null) {
+				txtResult.appendText("Nessun risultato: matricola inesistente");
+				return;
+			}
+
+			txtNome.setText(studente.getNome());
+			txtCognome.setText(studente.getCognome());
+			List<Corso> corsi = model.cercaCorsiDatoStudente(studente);
+
+			StringBuilder sb = new StringBuilder();
+
+			for (Corso corso : corsi) {
+				sb.append(String.format("%-10s ", corso.getCodins()));
+				sb.append(String.format("%-8s ", corso.getCrediti()));
+				sb.append(String.format("%-50s ", corso.getNome()));
+				sb.append(String.format("%-8s ", corso.getPd()));
+				sb.append("\n");
+			}
+			txtResult.appendText(sb.toString());
+
+		} catch (NumberFormatException e) {
+			txtResult.setText("Inserire una matricola nel formato corretto.");
+		} catch (RuntimeException e) {
+			txtResult.setText("ERRORE DI CONNESSIONE AL DATABASE!");
+}
     }
 
     @FXML
@@ -135,6 +165,8 @@ public class SegreteriaStudentiController {
     @FXML
     void doIscrivi(ActionEvent event) {
 
+
+    	
     }
 
     @FXML

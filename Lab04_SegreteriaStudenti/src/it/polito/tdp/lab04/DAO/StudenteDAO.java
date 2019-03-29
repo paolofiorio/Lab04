@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import it.polito.tdp.lab04.model.Studente;
+import it.polito.tdp.lab04.model.Corso;
 
 public class StudenteDAO {
 	public Studente getStudente(int matricola) {
@@ -32,5 +35,37 @@ public class StudenteDAO {
 
 		return studente;
 }
+	/*
+	 * Data una matricola ottengo la lista dei corsi (codins) a cui è iscritto
+	 */
+	public List<Corso> getCorsiFromStudente(Studente studente) {
+
+		final String sql = "SELECT * FROM iscrizione, corso WHERE iscrizione.codins=corso.codins AND matricola=?";
+
+		List<Corso> corsi = new LinkedList<Corso>();
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, studente.getMatricola());
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				Corso corso = new Corso(rs.getString("codins"),  rs.getString("nome"),rs.getInt("crediti"),
+						rs.getInt("pd"));
+				corsi.add(corso);
+			}
+
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Errore Db");
+		}
+
+		return corsi;
+	}
+
 
 }

@@ -26,4 +26,8 @@ public class Model {
 	public List<Studente> studentiIscrittiAlCorso(Corso corso) {
 		return corsoDao.getStudentiIscrittiAlCorso(corso);
 	}
+
+	public List<Corso> cercaCorsiDatoStudente(Studente studente) {
+		return studenteDao.getCorsiFromStudente(studente);
+		}
 }
