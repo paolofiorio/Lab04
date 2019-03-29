@@ -66,6 +66,30 @@ public class StudenteDAO {
 
 		return corsi;
 	}
+	public boolean isStudenteIscrittoACorso(Studente studente, Corso corso) {
+		final String sql = "SELECT * FROM iscrizione where codins=? and matricola=?";
+		boolean iscritto = false;
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, corso.getCodins());
+			st.setInt(2, studente.getMatricola());
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				iscritto = true;
+
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Errore Db");
+		}
+
+		return iscritto;
+	}
 
 
 }

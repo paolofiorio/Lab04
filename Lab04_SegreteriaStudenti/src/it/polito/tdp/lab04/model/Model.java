@@ -30,4 +30,14 @@ public class Model {
 	public List<Corso> cercaCorsiDatoStudente(Studente studente) {
 		return studenteDao.getCorsiFromStudente(studente);
 		}
+
+	public boolean isStudenteIscrittoACorso(Studente studente, Corso corso) {
+
+		return studenteDao.isStudenteIscrittoACorso(studente,corso);
+	}
+
+	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
+		
+		return corsoDao.inscriviStudenteACorso(studente, corso);
+	}
 }
